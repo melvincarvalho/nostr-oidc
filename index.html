@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Nostr-OIDC</title>
+  <script src="https://www.w3.org/Tools/respec/respec-w3c-common" class="remove"></script>
+  <script>
+    var respecConfig = {
+      specStatus: "CG-DRAFT",
+      shortName: "nostr-oidc",
+      editors: [
+        {
+          name: "Your Name",
+          company: "Your Organization"
+        }
+      ],
+      wg: "Nostr Community Group",
+      wgURI: "https://www.w3.org/community/nostr/",
+      wgPublicList: "public-nostr",
+      wgPatentURI: "https://www.w3.org/community/nostr/",
+      license: "cc-by"
+    };
+  </script>
+</head>
+<body>
+  <section>
+    <h2>Abstract</h2>
+    <p>This document describes the design of Nostr-OIDC, an adaptation of the Solid-OIDC authentication protocol for use within the Nostr protocol. Nostr-OIDC aims to provide secure and decentralized authentication and authorization for Nostr-based services and applications.</p>
+  </section>
+
+  <section>
+    <h2>Introduction</h2>
+    <p>Nostr is a decentralized messaging and social networking protocol. Solid-OIDC (OpenID Connect for Solid) provides a framework for secure authentication in decentralized environments. This document outlines how to adapt Solid-OIDC to integrate with the Nostr protocol, enhancing decentralized authentication and authorization for Nostr-based services and applications.</p>
+  </section>
+
+  <section>
+    <h2>Authentication Flow Adaptation</h2>
+    <h3>Initiating Authentication</h3>
+    <ul>
+      <li>User requests access to a Nostr-based service or application.</li>
+      <li>The service generates an authentication request and redirects the user to an OIDC provider compatible with Nostr.</li>
+      <li>The OIDC provider presents a login page and issues an ID token and access token upon successful login.</li>
+    </ul>
+    <h3>OIDC Provider Interaction</h3>
+    <ul>
+      <li>ID token contains claims about the user, including Nostr public key and other relevant information.</li>
+      <li>Access token grants the client access to user resources on the Nostr network.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Nostr Protocol Integration</h2>
+    <h3>Broadcasting the Tokens</h3>
+    <ul>
+      <li>Client sends the ID token and access token to the Nostr service via a secure channel.</li>
+      <li>Service verifies the tokens using the OIDC provider's public key.</li>
+    </ul>
+    <h3>Claim Verification</h3>
+    <ul>
+      <li>Nostr service checks claims in the ID token to verify user identity and authorization.</li>
+      <li>Nonce and other token attributes are verified to prevent misuse.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>User Session Management</h2>
+    <h3>Session Establishment</h3>
+    <ul>
+      <li>Upon verification, Nostr service establishes a user session and issues a session token.</li>
+      <li>Session token is stored securely on the client side and linked to the user's authenticated session on the server side.</li>
+    </ul>
+    <h3>Session Persistence</h3>
+    <ul>
+      <li>Session state maintained on the server side, associated with the user’s public key and session token.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Resource Access and API Calls</h2>
+    <h3>Authenticated API Calls</h3>
+    <ul>
+      <li>Client includes the session token in API request headers for authentication.</li>
+      <li>Nostr service validates the session token before processing requests.</li>
+    </ul>
+    <h3>Access Control</h3>
+    <ul>
+      <li>Service checks user permissions and access rights based on token claims.</li>
+      <li>User can only access authorized resources.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Token Revocation and Logout</h2>
+    <h3>Revoking Tokens</h3>
+    <ul>
+      <li>Users can revoke tokens by logging out or through a token revocation endpoint.</li>
+      <li>Nostr service invalidates the session token upon revocation request.</li>
+    </ul>
+    <h3>Logout Process</h3>
+    <ul>
+      <li>Client clears the session token from local storage on logout.</li>
+      <li>Nostr service terminates the user session and removes the session state.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Technical Details</h2>
+    <h3>OIDC Provider Requirements</h3>
+    <ul>
+      <li>Supports generating and verifying ID tokens with Nostr public keys.</li>
+      <li>Has an endpoint for token introspection and revocation.</li>
+    </ul>
+    <h3>Nostr Service Requirements</h3>
+    <ul>
+      <li>Implements token verification logic using the OIDC provider’s public key.</li>
+      <li>Supports secure communication channels for transmitting tokens and API calls.</li>
+      <li>Manages user sessions and enforces access controls based on token claims.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Example Implementation</h2>
+    <ol>
+      <li><strong>OIDC Provider Setup:</strong> Configure an OIDC provider to issue tokens with custom claims for Nostr integration.</li>
+      <li><strong>Nostr Service Configuration:</strong> Implement middleware for token verification. Set up session management and access control logic.</li>
+      <li><strong>Client Application:</strong> Integrate OIDC client library to handle authentication flow. Store session tokens securely and include them in API requests.</li>
+    </ol>
+  </section>
+</body>
+</html>
